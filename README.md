@@ -46,10 +46,10 @@ for (var i = 0; i < 1000; i++) {
 final logger = Logger.build(
   encoder: ConsoleEncoder(),
   writer: MultiWriter([
-      ConsoleWriter(),
-      FileWriter(
+    ConsoleWriter(),
+    FileWriter(
       join(Directory.current.path, 'test-multi.log'),
-    )
+    ),
   ]),
 );
 

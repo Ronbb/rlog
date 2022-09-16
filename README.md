@@ -42,7 +42,7 @@ for (var i = 0; i < 1000; i++) {
 ```
 
 ```dart
-/// Rotation logger
+/// MultiWriter logger
 final logger = Logger.build(
   encoder: ConsoleEncoder(),
   writer: MultiWriter([

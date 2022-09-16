@@ -2,14 +2,18 @@ import 'dart:math';
 
 import 'package:rlog/src/stack_trace_utils.dart';
 
+/// [StackTraceEncoder] encodes [StackTrace]
 abstract class StackTraceEncoder {
   const StackTraceEncoder();
 
+  /// Parse [StackTrace] and convert to [CustomStackTrace].
   CustomStackTrace customize(StackTrace stackTrace, [int skip = 0]);
 
+  /// Convert [StackTrace] to text.
   String encode(StackTrace stackTrace, [int skip = 0]);
 }
 
+/// Common [StackTrace]. It provides a console-style formatter.
 class CustomStackTrace extends StackTrace {
   CustomStackTrace(StackTrace stackTrace, this.skip) {
     allFrames = stackTrace.parse().toList();
@@ -40,6 +44,7 @@ class CustomStackTrace extends StackTrace {
   /// includes skipped frames.
   late final List<StackTraceFrame> allFrames;
 
+  /// does not include skipped frames.
   late final List<StackTraceFrame> frames;
 
   final int skip;
@@ -104,7 +109,7 @@ class CustomStackTraceEncoder extends StackTraceEncoder {
   @override
   String encode(StackTrace stackTrace, [int skip = 0]) {
     assert(skip >= 0);
-    
+
     return customize(stackTrace, skip).toString();
   }
 }

@@ -1,39 +1,60 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+An easy-to-use logging library with some presets.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Create a logger that log messages in your style.
+- Preset loggers/encoders/writers.
+- Rotation logger.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add to `pubspec.yaml`.
+
+```yaml
+dependencies:
+  rlog: <version>
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
-const like = 'sample';
+/// Console logger
+final logger = Logger.console();
+
+logger.debug('some texts');
+logger.error('some texts');
 ```
 
-## Additional information
+```dart
+/// Rotation logger
+final logger = Logger.build(
+  encoder: ConsoleEncoder(),
+  writer: RotationWriter(
+    join(Directory.current.path, 'test-rotation.log'),
+    maxCount: 16,
+    maxSize: 1 << 12,
+  ),
+);
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+for (var i = 0; i < 1000; i++) {
+  logger.info('test '.padRight(1 << 6, 'test '));
+}
+```
+
+```dart
+/// Rotation logger
+final logger = Logger.build(
+  encoder: ConsoleEncoder(),
+  writer: MultiWriter([
+      ConsoleWriter(),
+      FileWriter(
+      join(Directory.current.path, 'test-multi.log'),
+    )
+  ]),
+);
+
+for (var i = 0; i < 10; i++) {
+  await Future.delayed(Duration(milliseconds: 20));
+  logger.info('test test');
+}
+```

@@ -4,24 +4,32 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:rlog/src/writer.dart';
 
+/// Write log to a file.
+///
+/// Create the file if not exists.
 class FileWriter extends Writer {
   FileWriter(this.path) {
-    file = File(path);
+    _file = File(path);
+    if (!_file.existsSync()) {
+      _file.createSync(recursive: true);
+    }
   }
 
+  /// File path.
   final String path;
 
-  late final File file;
+  late final File _file;
 
   @override
   FutureOr<void> write(Object? data) {
-    file.writeAsStringSync(
+    _file.writeAsStringSync(
       data.toString(),
       mode: FileMode.writeOnlyAppend,
     );
   }
 }
 
+/// Write log to a file with rotations.
 class RotationWriter extends Writer {
   RotationWriter(
     this.path, {

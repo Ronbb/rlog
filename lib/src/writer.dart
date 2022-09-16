@@ -2,12 +2,15 @@ import 'dart:async';
 
 export 'writer_stub.dart' if (dart.library.io) 'writer_io.dart';
 
+/// Log Writer.
 abstract class Writer {
   const Writer();
 
+  /// Write log.
   FutureOr<void> write(Object? data);
 }
 
+/// Prints log to stdout or console.
 class ConsoleWriter extends Writer {
   const ConsoleWriter();
 
@@ -17,6 +20,7 @@ class ConsoleWriter extends Writer {
   }
 }
 
+/// Writes log to other writers.
 class MultiWriter extends Writer {
   const MultiWriter(
     this.writers, [
@@ -26,6 +30,7 @@ class MultiWriter extends Writer {
   /// if `false`, [MultiWriter] writes concurrently.
   final bool sequential;
 
+  /// Other writers. Do not make [MultiWriter] recursive.
   final List<Writer> writers;
 
   @override

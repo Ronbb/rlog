@@ -1,7 +1,6 @@
 name: rlog
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-publish_to: https://pub.dev
+description: An easy-to-use logging library with some presets.
+version: 0.0.1+1
 homepage: https://github.com/Ronbb/rlog
 repository: https://github.com/Ronbb/rlog.git
 

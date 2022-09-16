@@ -2,12 +2,17 @@ import 'package:rlog/src/level.dart';
 import 'package:rlog/src/message.dart';
 import 'package:rlog/src/stack_trace_encoder.dart';
 
+/// Log encoder.
+///
+/// [Encoder] Encodes [Message] with your style.
 abstract class Encoder<M extends Message> {
   const Encoder();
 
-  String encode(covariant M message);
+  /// Converts a [Message] to log object, like [String].
+  Object? encode(covariant M message);
 }
 
+/// A preset encoder for console style.
 class ConsoleEncoder extends Encoder<Message> {
   const ConsoleEncoder({
     this.stackTraceEncoder = const CustomStackTraceEncoder(),
@@ -16,7 +21,7 @@ class ConsoleEncoder extends Encoder<Message> {
   final StackTraceEncoder stackTraceEncoder;
 
   @override
-  String encode(Message message) {
+  Object? encode(Message message) {
     final buffer = StringBuffer();
     final dateTime = _formatDateTime(message.dateTime);
     final level = message.level;

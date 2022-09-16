@@ -1,6 +1,7 @@
 const kAsynchronousSuspension = '<asynchronous suspension>';
 final kFrameRegex = RegExp(r'#(\d+)\s+(.+)\s+\((.+)\)');
 
+/// Parsed from lines in [StackTrace].
 class StackTraceFrame {
   const StackTraceFrame({
     required this.caller,
@@ -15,12 +16,16 @@ class StackTraceFrame {
         location = '',
         isAsynchronousSuspension = true;
 
+  /// The number after `#`. Starts from `0`.
   final int index;
 
+  /// Function name.
   final String caller;
 
+  /// <file-parent>/<file>:<row>:<column>
   final String location;
 
+  /// It is not a frame and it displays [kAsynchronousSuspension].
   final bool isAsynchronousSuspension;
 
   @override
@@ -34,6 +39,7 @@ class StackTraceFrame {
 }
 
 extension StackTraceUtils on StackTrace {
+  /// Parses [StackTrace] to [StackTraceFrame]s.
   Iterable<StackTraceFrame> parse() sync* {
     final all = toString();
 

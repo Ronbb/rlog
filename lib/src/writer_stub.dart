@@ -4,6 +4,7 @@ import 'dart:indexed_db';
 
 import 'package:rlog/src/writer.dart';
 
+/// Writes log to indexedDB.
 class IndexDBWriter extends Writer {
   IndexDBWriter(this.name) {
     window.indexedDB!
@@ -11,6 +12,7 @@ class IndexDBWriter extends Writer {
         .then((value) => _db = value);
   }
 
+  /// Database name.
   final String name;
 
   Database? _db;

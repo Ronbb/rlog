@@ -38,6 +38,6 @@ class MultiWriter extends Writer {
       return;
     }
 
-    await Future.wait(writers.map((writer) async => write(data)));
+    await Future.wait(writers.map((writer) async => writer.write(data)));
   }
 }

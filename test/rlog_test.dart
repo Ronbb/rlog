@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:rlog/src/encoder.dart';
 import 'package:rlog/src/logger.dart';
+import 'package:rlog/src/writer.dart';
 import 'package:rlog/src/writer_io.dart';
 import 'package:test/test.dart';
 
@@ -37,7 +38,7 @@ void main() {
       logger = Logger.build(
         encoder: ConsoleEncoder(),
         writer: RotationWriter(
-          join(Directory.current.path, 'test.log'),
+          join(Directory.current.path, 'test-rotation.log'),
           maxCount: 16,
           maxSize: 1 << 12,
         ),
@@ -50,5 +51,27 @@ void main() {
         logger.info('test '.padRight(1 << 8, 'test '));
       }
     }, timeout: Timeout(Duration(minutes: 5)));
+  });
+
+  group('Multi Logger', () {
+    late final Logger logger;
+    setUp(() {
+      logger = Logger.build(
+        encoder: ConsoleEncoder(),
+        writer: MultiWriter([
+          ConsoleWriter(),
+          FileWriter(
+            join(Directory.current.path, 'test-multi.log'),
+          )
+        ]),
+      );
+    });
+
+    test('Loop Write', () async {
+      for (var i = 0; i < 10; i++) {
+        await Future.delayed(Duration(milliseconds: 20));
+        logger.info('test test');
+      }
+    });
   });
 }

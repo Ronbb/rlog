@@ -5,11 +5,11 @@ import 'package:path/path.dart';
 import 'package:rlog/src/writer.dart';
 
 class FileWriter extends Writer {
-  FileWriter(this.fileName) {
-    file = File.fromUri(fileName);
+  FileWriter(this.path) {
+    file = File(path);
   }
 
-  final Uri fileName;
+  final String path;
 
   late final File file;
 

@@ -1,3 +1,7 @@
+## 0.0.1+4
+
+- Downgrade package:path version.
+
 ## 0.0.1+3
 
 - Downgrade dart version.

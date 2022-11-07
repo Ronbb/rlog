@@ -1,6 +1,6 @@
 name: rlog
 description: An easy-to-use logging library with some presets, like Rotation, Console, Multi.
-version: 0.0.1+4
+version: 0.0.1+5
 homepage: https://github.com/Ronbb/rlog
 repository: https://github.com/Ronbb/rlog.git
 

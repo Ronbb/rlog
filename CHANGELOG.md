@@ -1,3 +1,7 @@
+## 0.0.1+5
+
+- Export more files.
+
 ## 0.0.1+4
 
 - Downgrade package:path version.

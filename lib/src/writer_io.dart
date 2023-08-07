@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:rlog/src/writer.dart';
+
+import 'writer.dart';
 
 /// Write log to a file.
 ///
@@ -30,38 +31,31 @@ class FileWriter extends Writer {
 }
 
 /// Write log to a file with rotations.
-class RotationWriter extends Writer {
-  RotationWriter(
-    this.path, {
-    this.maxSize = 1 << 24,
-    this.maxCount = 16,
-  })  : assert(maxCount > 0),
-        assert(maxSize > 0) {
-    _file = File(path);
+class InternalRotationWriter extends RotationWriter {
+  InternalRotationWriter(
+    this.options,
+  ) {
+    _file = File(options.path);
     if (!_file.existsSync()) {
       _file.createSync(recursive: true);
     }
   }
 
-  final int maxSize;
-
-  final int maxCount;
-
-  final String path;
+  final RotationWriterOptions options;
 
   late File _file;
 
   String _buildName(int index) {
-    return '${withoutExtension(path)}-$index${extension(path)}';
+    return '${withoutExtension(options.path)}-$index${extension(options.path)}';
   }
 
   void _rotate() {
-    final file = File(_buildName(maxCount));
+    final file = File(_buildName(options.maxCount));
     if (file.existsSync()) {
       file.deleteSync();
     }
 
-    for (var i = maxCount - 1; i > 0; i--) {
+    for (var i = options.maxCount - 1; i > 0; i--) {
       final file = File(_buildName(i));
       if (!file.existsSync()) {
         continue;
@@ -71,12 +65,12 @@ class RotationWriter extends Writer {
     }
 
     _file.renameSync(_buildName(1));
-    _file = File(path);
+    _file = File(options.path);
   }
 
   @override
   FutureOr<void> write(Object? data) {
-    if (_file.statSync().size > maxSize) {
+    if (_file.statSync().size > options.maxSize) {
       _rotate();
     }
 

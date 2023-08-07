@@ -1,6 +1,6 @@
 import 'dart:async';
 
-export 'writer_stub.dart' if (dart.library.io) 'writer_io.dart';
+import 'writer_html.dart' if (dart.library.io) 'writer_io.dart';
 
 /// Log Writer.
 abstract class Writer {
@@ -44,5 +44,28 @@ class MultiWriter extends Writer {
     }
 
     await Future.wait(writers.map((writer) async => writer.write(data)));
+  }
+}
+
+class RotationWriterOptions {
+  const RotationWriterOptions({
+    required this.path,
+    this.maxSize = 1 << 24,
+    this.maxCount = 16,
+  })  : assert(maxCount > 0),
+        assert(maxSize > 0);
+
+  final int maxSize;
+
+  final int maxCount;
+
+  final String path;
+}
+
+abstract class RotationWriter extends Writer {
+  const RotationWriter();
+
+  factory RotationWriter.create(RotationWriterOptions options) {
+    return InternalRotationWriter(options);
   }
 }

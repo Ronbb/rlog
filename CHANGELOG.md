@@ -1,3 +1,7 @@
+## 0.0.2
+
+- Implement fake rotation logger for html.
+
 ## 0.0.1+5
 
 - Export more files.

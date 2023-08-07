@@ -37,11 +37,11 @@ void main() {
     setUp(() {
       logger = Logger.build(
         encoder: ConsoleEncoder(),
-        writer: RotationWriter(
-          join(Directory.current.path, 'test-rotation.log'),
+        writer: InternalRotationWriter(RotationWriterOptions(
+          path: join(Directory.current.path, 'test-rotation.log'),
           maxCount: 16,
           maxSize: 1 << 12,
-        ),
+        )),
       );
     });
 

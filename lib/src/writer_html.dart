@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:html';
 import 'dart:indexed_db';
 
-import 'package:rlog/src/writer.dart';
+import 'writer.dart';
 
 /// Writes log to indexedDB.
 class IndexDBWriter extends Writer {
@@ -41,5 +41,19 @@ class IndexDBWriter extends Writer {
     final store = db.transactionStore(_store, 'readwrite');
     final objectStore = store.objectStore(_store);
     await objectStore.add(data);
+  }
+}
+
+class InternalRotationWriter extends RotationWriter {
+  InternalRotationWriter(this.options)
+      : _internal = IndexDBWriter(options.path);
+
+  final RotationWriterOptions options;
+
+  final IndexDBWriter _internal;
+
+  @override
+  FutureOr<void> write(Object? data) {
+    _internal.write(data);
   }
 }
